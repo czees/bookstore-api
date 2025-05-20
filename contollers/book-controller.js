@@ -73,7 +73,7 @@ const getSingleBooksById = async (req, res)=>{
         else{
              res.status(404).json({
                 success: false,
-                message: `No Book with ID ${bookId} was Found`
+                message: `No Book with ID ${bookId} was Found. check the ID and try again`
             })  
         }
 
@@ -90,6 +90,22 @@ const getSingleBooksById = async (req, res)=>{
 
 const updateBookById = async (req, res)=>{
     try{
+        const bookId = req.params;
+        const updatedBook = await Book.find(bookToUpdate => bookToUpdate.id === bookId);
+        
+        if(updatedBook){
+            res.status(200).json({
+                success: true,
+                message: `The Book with ID ${bookId} has been updated`,
+                data: updatedBook.push()
+            })
+        }
+        else{
+             res.status(404).json({
+                success: false,
+                message: `Book with ID ${bookId} was not updated. check the ID and try again`
+            }) 
+        }
     
     } catch(error){
         console.log(error)
@@ -104,6 +120,22 @@ const updateBookById = async (req, res)=>{
 
 const deleteBookById = async (req, res)=>{
     try{
+        const bookId = req.params;
+        const deletesingleBook = await Book.find(deletedBook => deletedBook.id === bookId);
+
+        if(deletesingleBook){
+            res.status(200).json({
+                success: true,
+                message: `Book with ID ${bookId} was Deleted Successfully`,
+                data: deletesingleBook.delete()
+            })
+        }
+        else{
+             res.status(404).json({
+                success: false,
+                message: `Book with ID ${bookId} was not deleted. There is no such a Book`
+            }) 
+        }
 
     } catch(error){
         console.log(error)
