@@ -22,8 +22,5 @@ const BookSchema = new mongoose.Schema({
   createdat: { type: Date, default: Date.now },
 });
 
-
-
-
-module.exports = mongoose.model('Book', BookSchema)
+module.exports = mongoose.model("Book", BookSchema);
 //book - is the name of the model. it will be used to work on the database. eg book.find({}).
