@@ -60,11 +60,11 @@ const getAllBooks = async (req, res)=>{
 
 const getSingleBooksById = async (req, res)=>{
     try{
-        const bookId = req.params;
-        const singleFoundBook =await Book.find(singleBook => singleBook.id === bookId);
+        const bookId = req.params.id;
+        const singleFoundBook =await Book.findById(bookId);
 
         if(singleFoundBook){
-            res.status(200).jsaon({
+            res.status(200).json({
                 success: true,
                 message: `The Book with ID ${bookId} was Found`,
                 data: singleFoundBook
@@ -73,7 +73,7 @@ const getSingleBooksById = async (req, res)=>{
         else{
              res.status(404).json({
                 success: false,
-                message: `No Book with ID ${bookId} was Found. check the ID and try again`
+                message: `No Book with ID ${bookId} was Found`
             })  
         }
 
@@ -90,23 +90,25 @@ const getSingleBooksById = async (req, res)=>{
 
 const updateBookById = async (req, res)=>{
     try{
-        const bookId = req.params;
-        const updatedBook = await Book.find(bookToUpdate => bookToUpdate.id === bookId);
-        
-        if(updatedBook){
+        const updatedInfrom = req.body;
+        const bookId = req.params.id;
+        const updateBook = await Book.findByIdAndUpdate(bookId, updatedInfrom, {new: true});
+        //will take 3 parameters. the id and the information to update followed by the new object property which is very important
+
+        if(updateBook){
             res.status(200).json({
                 success: true,
-                message: `The Book with ID ${bookId} has been updated`,
-                data: updatedBook.push()
+                message: `Book with ID ${bookId} was updated`,
+                data: updateBook
             })
         }
-        else{
+         else{
              res.status(404).json({
                 success: false,
-                message: `Book with ID ${bookId} was not updated. check the ID and try again`
-            }) 
+                message: `No Book with ID ${bookId} was Found`
+            })  
         }
-    
+
     } catch(error){
         console.log(error)
         res.status(404).json({
@@ -120,21 +122,21 @@ const updateBookById = async (req, res)=>{
 
 const deleteBookById = async (req, res)=>{
     try{
-        const bookId = req.params;
-        const deletesingleBook = await Book.find(deletedBook => deletedBook.id === bookId);
+        const bookId = req.params.id;
+        const deletedBook = await Book.findByIdAndDelete(bookId);
 
-        if(deletesingleBook){
+        if(deleteBookById){
             res.status(200).json({
                 success: true,
-                message: `Book with ID ${bookId} was Deleted Successfully`,
-                data: deletesingleBook.delete()
+                message: `The Book with ID ${bookId} was deleted`,
+                data: deletedBook
             })
         }
-        else{
+         else{
              res.status(404).json({
                 success: false,
-                message: `Book with ID ${bookId} was not deleted. There is no such a Book`
-            }) 
+                message: `No Book with ID ${bookId} was Found`
+            })  
         }
 
     } catch(error){
