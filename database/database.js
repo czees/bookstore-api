@@ -1,15 +1,34 @@
 const mongoose = require("mongoose");
 
-const mongoData = async () => {
+//import hidden mongo connections from .env
+const mongoBookData = process.env.MONGO_BOOK_DATA ;
+const mongoUserAuthData = process.env.MONGO_USER_AUTH_DATA;
+
+const bookData = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://clintojiamboh:clintojiamboh.@bookstoreapi.mihlagh.mongodb.net/"
-    );
+    await mongoose.connect(mongoBookData);
+
     console.log("Connection to the Database was Successful!");
+
   } catch (error) {
     console.error("Connection to the Database has failed!", error);
     process.exit(1);
   }
 };
 
-module.exports = mongoData;
+
+const userAuthData = async ()=>{
+      try {
+    await mongoose.connect(mongoUserAuthData);
+
+    console.log("Connection to the Database was Successful!");
+    
+  } catch (error) {
+    console.error("Connection to the Database has failed!", error);
+    process.exit(1);
+  }
+}
+
+
+
+module.exports = {bookData, userAuthData};
